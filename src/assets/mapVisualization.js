@@ -4,12 +4,13 @@ const d3 = require('d3');
 function MapVisualization(){
     //const width = 800;
     //const height = 600;
+    let projection = d3.geoMercator()
+        .center([0, 0])
+        .scale(1);
 
     function me(selection){
         const fc = selection.datum()
-        const projection = d3.geoMercator()
-            .center([12.490367188063198, 42.004858406718476])
-            .scale(1800);
+
         const path = d3.geoPath().projection(projection);
 
         selection.selectAll('path')
@@ -18,14 +19,20 @@ function MapVisualization(){
             .attr('d', path)
     }
 
+    me.projection = function(value){
+        if(!arguments.length) return projection;
+        projection = value;
+        return me;
+    }
+
     return me;
 }
 
 function BubbleMapVisualization(){
     let attribute = 'totale_positivi';
-    const projection = d3.geoMercator()
-        .center([12.490367188063198, 42.004858406718476])
-        .scale(1800);
+    let projection = d3.geoMercator()
+        .center([0, 0])
+        .scale(20);
     const r = d3.scaleSqrt()
         .domain([0, 1500])
         .range([0, 15]);
@@ -45,6 +52,12 @@ function BubbleMapVisualization(){
     me.attribute = function(value){
         if(!arguments.length) return attribute;
         attribute = value;
+        return me;
+    }
+
+    me.projection = function(value){
+        if(!arguments.length) return projection;
+        projection = value;
         return me;
     }
 

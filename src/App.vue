@@ -25,8 +25,12 @@
 const d3 = require('d3');
 import {MapVisualization, BubbleMapVisualization} from './assets/mapVisualization.js';
 
-const map = MapVisualization();
-const bubbleMap = BubbleMapVisualization();
+const projection = d3.geoMercator()
+    .center([12.490367188063198, 42.004858406718476])
+    .scale(1800);
+
+const map = MapVisualization().projection(projection);
+const bubbleMap = BubbleMapVisualization().projection(projection);
 
 export default {
   name: 'App',
@@ -61,7 +65,6 @@ export default {
 
       d3.csv('https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni-20200403.csv', d3.autoType)
       .then(data => {
-          console.log(data);
           this.covid_statistics = data;
       })
   },
