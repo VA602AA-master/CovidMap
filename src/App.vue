@@ -13,9 +13,10 @@
 
 <script>
 const d3 = require('d3');
-import MapVisualization from './assets/mapVisualization.js';
+import {MapVisualization, BubbleMapVisualization} from './assets/mapVisualization.js';
 
 const map = MapVisualization();
+const bubbleMap = BubbleMapVisualization();
 
 export default {
   name: 'App',
@@ -25,6 +26,8 @@ export default {
   data(){
       return{
         featureCollection: {},
+        covid_statistics: [],
+        current_feature: 'totale_positivi',
       }
   },
   mounted(){
@@ -39,6 +42,7 @@ export default {
       d3.csv('https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni-20200403.csv', d3.autoType)
       .then(data => {
           console.log(data);
+          this.covid_statistics = data;
       })
   },
   methods:{
@@ -46,6 +50,9 @@ export default {
           const g = d3.select(this.$refs.background);
           g.datum(this.featureCollection)
               .call(map);
+          const gf = d3.select(this.$refs.foreground);
+          gf.datum(this.covid_statistics)
+              .call(bubbleMap);
 
       }
   }
