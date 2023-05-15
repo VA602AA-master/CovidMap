@@ -22,7 +22,7 @@ function MapVisualization(){
 }
 
 function BubbleMapVisualization(){
-    const attribute = 'totale_positivi';
+    let attribute = 'totale_positivi';
     const projection = d3.geoMercator()
         .center([12.490367188063198, 42.004858406718476])
         .scale(1800);
@@ -31,6 +31,7 @@ function BubbleMapVisualization(){
         .range([0, 15]);
 
     function me(selection){
+        r.domain([0, d3.max(selection.datum(), d => d[attribute])]);
 
         selection.selectAll('circle')
             .data(selection.datum())
@@ -39,6 +40,12 @@ function BubbleMapVisualization(){
             .attr('cy', d => projection([d.long, d.lat])[1])
             .attr('r', d => r(d[attribute]))
             .attr('fill', 'red')
+    }
+
+    me.attribute = function(value){
+        if(!arguments.length) return attribute;
+        attribute = value;
+        return me;
     }
 
     return me;

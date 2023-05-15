@@ -1,14 +1,24 @@
 <template>
-  <div id="app">
-      <h1>My map</h1>
-      <div id="map"></div>
-      <div style="background-color: bisque; width: 100%; height:500px" >
-          <svg id="map" ref="map" width="800" height="600">
-            <g class="background" ref="background"/>
-            <g class="foreground" ref="foreground"/>
-          </svg>
-      </div>
-  </div>
+  <b-container id="app">
+      <b-row>
+          <b-col><h1>My map</h1></b-col>
+      </b-row>
+      <b-row>
+          <b-col>
+              <svg id="map" ref="map" width="800" height="600">
+                  <g class="background" ref="background"/>
+                  <g class="foreground" ref="foreground"/>
+              </svg>
+          </b-col>
+          <b-col cols="3">
+              <b-form-group label="Select a feature">
+                  <b-form-select v-model="current_feature" :options="attribute_options">
+
+                  </b-form-select>
+              </b-form-group>
+          </b-col>
+      </b-row>
+  </b-container>
 </template>
 
 <script>
@@ -28,6 +38,16 @@ export default {
         featureCollection: {},
         covid_statistics: [],
         current_feature: 'totale_positivi',
+        attribute_options: [
+            'totale_positivi',
+            'deceduti',
+            'dimessi_guariti',
+            'totale_casi',
+            'tamponi',
+            'terapia_intensiva',
+            'totale_ospedalizzati',
+            'isolamento_domiciliare'
+        ]
       }
   },
   mounted(){
@@ -53,7 +73,12 @@ export default {
           const gf = d3.select(this.$refs.foreground);
           gf.datum(this.covid_statistics)
               .call(bubbleMap);
-
+      }
+  },
+  watch:{
+      current_feature(newVal){
+          bubbleMap.attribute(newVal);
+          this.refreshMap();
       }
   }
 }
