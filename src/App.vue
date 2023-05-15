@@ -34,7 +34,12 @@ export default {
           this.featureCollection = data;
           console.log(this.featureCollection);
           this.refreshMap();
-    })
+      })
+
+      d3.csv('https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni-20200403.csv', d3.autoType)
+      .then(data => {
+          console.log(data);
+      })
   },
   methods:{
       refreshMap(){
@@ -56,9 +61,10 @@ export default {
   margin-top: 60px;
 }
 
-svg path{
-    stroke: bisque;
+svg g.background path{
+    stroke: black;
     stroke-width: 1px;
-    fill: lightgray;
+    fill-opacity: 0.2;
+    fill: none;
 }
 </style>
