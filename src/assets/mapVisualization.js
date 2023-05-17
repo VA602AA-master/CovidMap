@@ -61,7 +61,29 @@ function BubbleMapVisualization(){
         return me;
     }
 
+    me.r = function(){
+        return r;
+
+    }
+
     return me;
 }
 
-export {MapVisualization, BubbleMapVisualization}
+function BubbleLegend(){
+
+    let r = d3.scaleSqrt();
+
+    function me(){
+
+    }
+
+    me.r = function(value){
+        if(!arguments.length) return r;
+        r = value;
+        return me;
+    }
+
+    return me;
+}
+
+export {MapVisualization, BubbleMapVisualization, BubbleLegend};

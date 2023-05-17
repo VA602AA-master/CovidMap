@@ -8,6 +8,7 @@
               <svg id="map" ref="map" width="800" height="600">
                   <g class="background" ref="background"/>
                   <g class="foreground" ref="foreground"/>
+                  <g class="legend" ref="legend"/>
               </svg>
           </b-col>
           <b-col cols="3">
@@ -23,7 +24,7 @@
 
 <script>
 const d3 = require('d3');
-import {MapVisualization, BubbleMapVisualization} from './assets/mapVisualization.js';
+import {BubbleMapVisualization, MapVisualization,BubbleLegend} from './assets/mapVisualization.js';
 
 const projection = d3.geoMercator()
     .center([12.490367188063198, 42.004858406718476])
@@ -31,6 +32,7 @@ const projection = d3.geoMercator()
 
 const map = MapVisualization().projection(projection);
 const bubbleMap = BubbleMapVisualization().projection(projection);
+const bubbleLegend = BubbleLegend().r(bubbleMap.r());
 
 export default {
   name: 'App',
@@ -82,6 +84,8 @@ export default {
       current_feature(newVal){
           bubbleMap.attribute(newVal);
           this.refreshMap();
+          bubbleLegend.r(bubbleMap.r());
+          d3.select(this.$refs.legend).call(bubbleLegend);
       }
   }
 }
